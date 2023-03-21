@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+  {% if category %}
+    {{ category.description|truncatewords:155 }}
+  {% else %}
+    Welcome to Yesta Mart where you can buy different products...
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {% if category %}
+    {{ category.name }} - Yesta Mart
+  {% else %}
+    See our New Collections - Yesta Mart
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+  {% if category %}
+
+    <div>
+      <div class="row my_row_class">
+         <div class="mx-auto">
+          <p><a href="{% url 'shop:allProdCat' %}">Our Product Collections</a></p>
+      </div>
+        </div>
+    </div>
+  {% endif %}
+
+<div class="mx-auto">
+  {% if category %}
+  <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+</div>
+<br>
+<div>
+  <h1 class="text-center my_title">{{category.name}}</h1>
+  <p class="text-justify">{{category.description}}</p>
+</div>
+  {% else %}
+  <div>
+    <img class="my_image my_image_padding" src="{% static 'img/banner.png' %}" alt="our products" width="2300px" height="800px">
+  </div>
+<br>
+<div>
+  <h1 class="text-center my_title">Our Product Collections</h1>
+  <p class="text-justify">Our purpose at Cents of Style is to empower women to lead bold and full lives. We believe that if you look good, you feel good. And when you feel good you can do good for others around you. Cents of Style brings you a wide range of trendy shoes, beautiful scarves, and statement-making jewelry, all at affordable prices to make them accessible to you.
+  Today's women's clothing is a line of ultimate representation of a woman's body confidence that will make her all the more stylish and glamorous. Find about the lessons of women's clothing and the cardinal rules of dressing up in relation to your body shape as you read on.
+  The heat is on! Pull on your khakis and that plain shirt. oooh, don't even try to. Plain tees are too boring to beat the heat. Get load and do it through colors. Summer is all about kooky pattern mixes, wild and exotic colors. Try on some batiks or embroidered fabric tops, uniquely patterned skirts or clothes that are rich in colored pretty ruffles. If you want to still stick with your jeans, pair it up with off-the-shoulder tunic as a cover up.
+  Dressing up sexy does not always mean micro mini skirts and super tight tube tops. Try on some sassy classic look. Make it loose, not tight. Full-skirted, not gripping. Flatter the looseness of a longer, full-skirted dress that will go with your height and don't be afraid to stand out. Skinny and tall women will look good on belted dresses with stiff pleats that are so forties look.
+  </p>
+</div>
+  {% endif %}
+
+<div class="container">
+  <div class="row mx_auto">
+    {% for product in products.object_list %}
+    <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-md-12 col-lg-4">
+      <div class="card text-center" style="min-width : 18rem;">
+        <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}"></a>
+        <div class="card-body">
+          <h4>{{product.name}}</h4>
+          <h4>{{product.price}}</h4>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="mx-auto">
+    {% if products.paginator.num_pages > 1 %}
+
+    <hr>
+    <div class="text-center">
+      {% for pg in products.paginator.page_range %}
+          <a href="?page={{pg}}" class="bth btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  <br>
+</div>
+{% endblock %}
+
